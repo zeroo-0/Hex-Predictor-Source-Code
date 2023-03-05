@@ -1,0 +1,729 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="user-scalable=no, initial-scale=1">
+<title>hexpredictor.com/predictor/mines</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+		html {
+			background-color: #1a1f3f;
+			background-repeat: repeat;
+			background-size: 5%;
+		}
+
+		.popup {
+			background-color: red;
+			position: fixed;
+			border-radius: 20px;
+			bottom: 50px;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 500;
+		}
+
+		.popup p {
+			font-size: 1em;
+			font-weight: bold;
+			font-family: Arial, Helvetica, sans-serif;
+			color: #fff;
+			padding: 0px 50px;
+		}
+
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 20px;
+			margin: auto;
+			justify-content: center;
+			padding: 50px 0px;
+			overflow: hidden;
+		}
+
+		.grid-container {
+			background: url(https://bloxflip.com/_next/static/media/mines-game-bg.4aa39c65.png);
+			background-repeat: no-repeat;
+			border-radius: 50%;
+			display: inline-grid;
+			grid-template-columns: auto auto auto auto auto;
+			padding: 75px;
+			border-radius: 20px;
+			column-gap: 25px;
+			row-gap: 25px;
+		}
+
+		.grid-container-settings {
+			background: #22264b;
+			display: flex;
+			flex-direction: column;
+			border-radius: 20px;
+			height: 550px;
+			width: 450px;
+			position: relative;
+		}
+
+		.grid-container-settings .start {
+			position: absolute;
+			bottom: 15px;
+			height: 50px;
+			width: 85%;
+			left: 50%;
+			border-radius: 15px;
+			background-color: #3656ff;
+			border: none;
+			color: white;
+			transform: translate(-50%, -50%);
+			font-size: 18px;
+			font-weight: bold;
+			transition: all 0.3s;
+		}
+
+		.grid-container-settings .cashout {
+			border-radius: 15px;
+			border: 1px solid #3656ff;
+			color: #3656ff;
+			background: transparent;
+		}
+
+		.grid-container-settings .start:hover {
+			background-color: #4261fc;
+			color: #fff;
+		}
+
+		.optiondelete {
+			position: absolute;
+			height: 50px;
+			width: 82%;
+			left: 50%;
+			padding-left: 3%;
+			transform: translate(-50%, -50%);
+		}
+
+		.optiondelete p {
+			position: absolute;
+			font-family: Arial, Helvetica, sans-serif;
+			top: -70px;
+			left: 0px;
+			color: #404d7b;
+		}
+
+		.optiondelete input {
+			position: absolute;
+			height: 50px;
+			left: 50%;
+			width: calc(100% - 25px);
+			padding-left: 25px;
+			border-radius: 10px;
+			background-color: #292e54;
+			border: none;
+			color: white;
+			transform: translate(-50%, -50%);
+			font-size: 16px;
+			outline: none;
+			transition: all 0.3s;
+		}
+		.optionmain {
+			position: absolute;
+			height: 50px;
+			width: 82%;
+			left: 50%;
+			padding-left: 3%;
+			transform: translate(-50%, -50%);
+		}
+
+		.optionmain p {
+			position: absolute;
+			font-family: Arial, Helvetica, sans-serif;
+			top: -70px;
+			left: 0px;
+			color: #404d7b;
+		}
+
+		.optionmain input {
+			position: absolute;
+			height: 50px;
+			left: 50%;
+			width: calc(100% - 25px);
+			padding-left: 25px;
+			border-radius: 10px;
+			background-color: #292e54;
+			border: none;
+			color: white;
+			transform: translate(-50%, -50%);
+			font-size: 16px;
+			outline: none;
+			transition: all 0.3s;
+		}
+
+		.option0 {
+			position: absolute;
+			left: 50%;
+			top: 60px;
+			padding: 8px 10px;
+			border-radius: 10px;
+			background-color: #292e54;
+			color: white;
+			transform: translate(-50%, -50%);
+			font-size: 20px;
+			font-family: Arial, Helvetica, sans-serif;
+			cursor: pointer;
+		}
+
+		.option1 input {
+			width: calc(100% - 45px);
+			padding-left: 45px;
+			background-image: url("data:image/svg+xml,%3Csvg width='17' height='25' viewBox='0 0 17 25' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M14.9748 7.35062L8.83643 3.78701C8.62828 3.66617 8.37183 3.66617 8.16368 3.78701L2.02535 7.35062C1.8172 7.47146 1.68897 7.69478 1.68897 7.93646V15.0637C1.68897 15.3054 1.8172 15.5287 2.02535 15.6495L8.16368 19.2131C8.37183 19.334 8.62828 19.334 8.83643 19.2131L14.9748 15.6495C15.1829 15.5287 15.3111 15.3054 15.3111 15.0637V7.93646C15.3111 7.69478 15.1829 7.47146 14.9748 7.35062ZM9.50917 2.61533C8.88473 2.25281 8.11538 2.25282 7.49094 2.61533L1.3526 6.17894C0.728162 6.54146 0.34349 7.21143 0.34349 7.93646V15.0637C0.34349 15.7887 0.728162 16.4587 1.3526 16.8212L7.49094 20.3848C8.11538 20.7473 8.88473 20.7473 9.50917 20.3848L15.6475 16.8212C16.272 16.4587 16.6566 15.7887 16.6566 15.0637V7.93646C16.6566 7.21142 16.272 6.54146 15.6475 6.17894L9.50917 2.61533Z' fill='%23818EBB'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M4 14.4393H5.58537V11.9458C5.78393 11.8942 6.47436 11.8993 6.47436 12.3331V14.4393H8.03944V11.8834C7.99362 11.7027 7.74619 11.3452 7.12302 11.3606C7.42849 11.3284 8.03944 11.1051 8.03944 10.47V9.50185C8.01653 9.12106 7.68204 8.35947 6.52734 8.35947H4V14.4393ZM5.5578 9.36639V10.8188H6.17639C6.32913 10.793 6.6346 10.6097 6.6346 10.0829C6.6346 9.55618 6.32913 9.38576 6.17639 9.36639H5.5578Z' fill='%23818EBB'/%3E%3Cpath d='M11.3033 10.9015C10.7521 10.6562 10.2317 10.4246 10.2338 10.1611C10.2354 9.97996 10.515 9.79476 10.9813 9.79476C10.9854 9.79476 10.9894 9.79476 10.9935 9.79476C11.6106 9.799 12.2081 10.2939 12.3229 10.4161L12.4377 10.5384L13.5 9.56618L13.386 9.46C13.2069 9.2935 12.5804 8.75219 11.7669 8.5132L11.775 7.50908L10.2902 7.49902L10.2823 8.47969C9.35365 8.70686 8.73481 9.36952 8.72846 10.1602C8.72 11.201 9.81846 11.6915 10.7012 12.0856C11.2504 12.3307 11.769 12.5625 11.7669 12.8262C11.7662 12.9175 11.7019 13.0068 11.586 13.0777C11.4423 13.1655 11.2367 13.2137 11.0071 13.2114C10.3048 13.2066 9.695 12.5787 9.68904 12.5722L9.57519 12.4486L8.5 13.4202L8.61788 13.5299C8.79885 13.6985 9.43019 14.2458 10.2337 14.4833L10.2256 15.4876L11.7102 15.4976L11.7181 14.5157C12.6529 14.2787 13.276 13.6123 13.2823 12.8269C13.291 11.7861 12.1888 11.2956 11.3033 10.9015Z' fill='%23818EBB'/%3E%3C/svg%3E%0A");
+			background-position: 16px;
+			background-position: 16px;
+			background-repeat: no-repeat;
+			background-size: 17px auto;
+		}
+
+		#option0 {
+			top: 40px;
+		}
+
+		#option1 {
+			top: 150px;
+		}
+
+		#option2 {
+			top: 250px;
+		}
+
+		#option3 {
+			bottom: 80px;
+		}
+
+		.grid-item {
+			background-color: #1c2249;
+			border-radius: 10%;
+  			box-shadow: none;
+			padding: 50px;
+			font-size: 30px;
+			background-repeat: no-repeat;
+			background-size: 55%;
+			background-position: center;
+			background-image: url(https://bloxflip.com/_next/static/media/default.57502903.svg);
+			cursor: pointer;
+			filter: grayscale(90%);
+			transition: all 0.3s;
+			-webkit-tap-highlight-color: transparent;
+		}
+
+		:not(.spinner, .robux).grid-item:hover {
+			background-color: rgb(33, 44, 109);
+			transition: all 0.2s;
+		}
+
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+			justify-content: space-between;
+			position: relative;
+		}
+
+		li {
+			float: left;
+			padding: 20px 0px;
+		}
+
+		li a {
+			display: block;
+			color: white;
+			text-align: center;
+			padding: 10px 16px;
+			text-decoration: none;
+			font-size: 20px;
+			border-radius: 20px;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		.active {
+			background-color: rgb(19, 19, 19);
+		}
+
+		@keyframes spinner {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		:not(.shownbomb, .bomb, .robux).spinner {
+			background-color: #1c2249;
+			border-radius: 10%;
+			border: none;
+			font-size: 30px;
+			background-repeat: no-repeat;
+			background-size: 55%;
+			background-position: center;
+			background-image: none;
+			cursor: default;
+		}
+
+		:not(.shownbomb, .bomb, .robux).spinner:after {
+			content: "";
+			position: absolute;
+			margin: -50px;
+			width: 100px;
+			height: 100px;
+			background-image: none;
+			background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 39 39' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M19.5 1.15C21.9098 1.15 24.2959 1.62464 26.5222 2.54681C28.7486 3.46898 30.7715 4.82064 32.4754 6.52459C34.1794 8.22855 35.531 10.2514 36.4532 12.4778C37.3754 14.7041 37.85 17.0902 37.85 19.5C37.85 21.9098 37.3754 24.2959 36.4532 26.5222C35.531 28.7486 34.1794 30.7715 32.4754 32.4754C30.7715 34.1794 28.7486 35.531 26.5222 36.4532C24.2959 37.3754 21.9098 37.85 19.5 37.85C17.0902 37.85 14.7041 37.3754 12.4778 36.4532C10.2514 35.531 8.22854 34.1794 6.52459 32.4754C4.82063 30.7714 3.46898 28.7486 2.54681 26.5222C1.62463 24.2959 1.15 21.9097 1.15 19.5C1.15 17.0902 1.62464 14.7041 2.54681 12.4777C3.46899 10.2514 4.82064 8.22854 6.5246 6.52458C8.22855 4.82063 10.2514 3.46898 12.4778 2.54681C14.7041 1.62463 17.0903 1.15 19.5 1.15L19.5 1.15Z' stroke='%23282E54' stroke-width='2.3'/%3E%3Cpath d='M36.9519 13.8295C38.1494 17.515 38.1494 21.485 36.9519 25.1705C35.7544 28.8559 33.4209 32.0677 30.2859 34.3455C27.1508 36.6232 23.3751 37.85 19.5 37.85C15.6249 37.85 11.8492 36.6232 8.71414 34.3455C5.57909 32.0677 3.2456 28.8559 2.04811 25.1705C0.850629 21.485 0.850629 17.515 2.04811 13.8295C3.2456 10.1441 5.57909 6.93229 8.71414 4.65454C11.8492 2.37679 15.6249 1.15 19.5 1.15' stroke='url(%23paint0_linear_382_57346)' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_382_57346' x1='19.5' y1='0' x2='40.5' y2='12' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%233656FF'/%3E%3Cstop offset='1' stop-color='%23282E54'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A") 50%/55% auto no-repeat;
+			transition: .2s ease;
+			animation: spinner 2s linear infinite;
+		}
+
+		:not(.shownbomb).robux {
+			border-radius: 10%;
+			border: none;
+			font-size: 30px;
+			background-repeat: no-repeat;
+			background-size: 55%;
+			background-position: center;
+			background-image: url(https://bloxflip.com/_next/static/media/opened-good.03734ef4.svg);
+			background-color: transparent;
+			filter: drop-shadow(0 0 15px rgba(82, 214, 254, 0.8));
+			transition: background-image 0.2s ease-in !important;
+		}
+
+		.bomb {
+			border-radius: 10%;
+			border: none;
+			font-size: 30px;
+			background-repeat: no-repeat;
+			background-size: 55%;
+			background-position: center;
+			background-image: url(https://bloxflip.com/_next/static/media/opened-bad.0bc10ff8.svg);
+			background-color: #ff2b77;
+			box-shadow: 0 0 15px rgb(255 67 146 / 50%), 0 0 50px rgb(255 40 131 / 60%);
+			transition: background-image 0.2s ease-in !important;
+		}
+		:not(.spinner, .robux, .bomb, .shownbomb).probux {
+			background-image: url(https://bloxflip.com/_next/static/media/opened-good.03734ef4.svg);
+		}
+
+		:not(.spinner, .robux, .bomb, .shownbomb).pbomb {
+			background-image: url(https://bloxflip.com/_next/static/media/opened-bad.0bc10ff8.svg);
+		}
+		.shownbomb {
+			border-radius: 10%;
+			border: none;
+			font-size: 30px;
+			padding: 50px;
+			padding-inline-start: 50px;
+			background-repeat: no-repeat;
+			background-size: 55%;
+			background-position: center;
+			background-image: url(https://bloxflip.com/_next/static/media/opened-bad.0bc10ff8.svg);
+			filter: drop-shadow(0 0 30px rgb(255, 40, 131));
+			transition: background-image 0.2s ease-in !important;
+		}
+
+		.login {
+			background-color: #3656ff;
+			position: absolute;
+			right: 50px;
+			cursor: pointer;
+			border-radius: 20px;
+		}
+
+		.logincontainer {
+			position: fixed;
+			z-index: 2;
+			left: 50%;
+			top: 50%;
+			height: 600px;
+			width: 800px;
+			background-color: #1a1f3f;
+			border-radius: 20px;
+			opacity: 0;
+			transform: translate(-50%, 300%);
+			transition: all 0.3s ease;
+			border-radius: 10px;
+			box-shadow: 0 0 0 9999px rgba(5, 0, 26, 0.6);
+		}
+
+		.logincontainer .login {
+			position: absolute;
+			bottom: 15px;
+			height: 50px;
+			width: 90%;
+			left: 50%;
+			border-radius: 15px;
+			background-color: #3656ff;
+			border: none;
+			color: white;
+			transform: translate(-50%, -50%);
+			font-size: 18px;
+			font-weight: bold;
+		}
+
+		.logincontainer .login {
+			position: absolute;
+			bottom: 15px;
+			height: 50px;
+			width: 90%;
+			left: 50%;
+			border-radius: 15px;
+			background-color: #3656ff;
+			border: none;
+			color: white;
+			transform: translate(-50%, -50%);
+			font-size: 18px;
+			font-weight: bold;
+		}
+
+		.logintoken {
+			position: absolute;
+			height: 50px;
+			width: 90%;
+			bottom: 60px;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.logincredentials1 {
+			position: absolute;
+			height: 50px;
+			width: 90%;
+			bottom: 160px;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			display: none;
+		}
+
+		.logincredentials2 {
+			position: absolute;
+			height: 50px;
+			width: 90%;
+			bottom: 60px;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			display: none;
+		}
+
+		.logincredentials1 p,
+		.logincredentials2 p,
+		.logintoken p {
+			position: absolute;
+			color: #5f6892;
+			font-family: Arial, Helvetica, sans-serif;
+			top: -70px;
+		}
+
+		.logincredentials1 input,
+		.logincredentials2 input,
+		.logintoken input {
+			position: absolute;
+			height: 50px;
+			width: 97%;
+			left: 50%;
+			padding-left: 3%;
+			border-radius: 10px;
+			background-color: #292e54;
+			border: none;
+			transform: translate(-50%, -50%);
+			font-size: 16px;
+			color: white;
+			outline: none;
+			transition: all 0.3s;
+		}
+
+		.show {
+			display: block;
+			transform: translate(-50%, -50%);
+			opacity: 1;
+			transition: all 0.3s;
+		}
+
+		.close {
+			position: absolute;
+			top: 40px;
+			right: 40px;
+			width: 14px;
+			height: 14px;
+			border: none;
+			cursor: pointer;
+			box-shadow: none;
+			background: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M13.7071 1.70711C14.0976 1.31658 14.0976 0.683417 13.7071 0.292893C13.3166 -0.0976311 12.6834 -0.0976311 12.2929 0.292893L7 5.58579L1.70711 0.292893C1.31658 -0.0976311 0.683417 -0.0976311 0.292893 0.292893C-0.0976311 0.683417 -0.0976311 1.31658 0.292893 1.70711L5.58579 7L0.292893 12.2929C-0.0976311 12.6834 -0.0976311 13.3166 0.292893 13.7071C0.683417 14.0976 1.31658 14.0976 1.70711 13.7071L7 8.41421L12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L8.41421 7L13.7071 1.70711Z' fill='%235F6892'/%3E%3C/svg%3E%0A") 50%/100% 100% no-repeat;
+			z-index: 10;
+		}
+
+		.logindescription {
+			margin: 0px 25px;
+		}
+
+		.logindescription h1 {
+			color: white;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		.logindescription p {
+			color: #5f6892;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		.loginoption {
+			display: flex;
+			column-gap: 10px;
+			cursor: pointer;
+			z-index: 2;
+		}
+
+		.loginoption a {
+			padding: 15px 10px;
+			border-radius: 4px;
+			color: #818ebb;
+			font-weight: bold;
+			font-family: Arial, Helvetica, sans-serif;
+			cursor: pointer;
+		}
+		.select,
+		.loginoption a:hover {
+			background-color: #282e54;
+			transition: all 0.3s;
+			color: #fff !important;
+		}
+		@media screen and (max-width: 1236px) {
+			.container {
+				display: inline-block;
+				width: calc(100% - 40px);
+				margin: 20px;
+			}
+			.gridbackground{
+				background: url(https://bloxflip.com/_next/static/media/mines-game-bg.4aa39c65.png);
+				background-size: cover;
+				border-radius: 20px;
+				margin-bottom: 50px;
+			}
+			.grid-container {
+				background: unset;
+				padding: 60px;
+				border-radius: 20px;
+				column-gap: 5px;
+				row-gap: 15px;
+				margin-left: 50%;
+				transform: translate(-50%, 0);
+			}
+			.grid-container-settings{
+				width: 100%;
+			}
+			.option1 input,
+			.option2 input,
+			.option3 input {
+				height: 115%;
+			}
+			.option1 p,
+			.option2 p,
+			.option3 p {
+				position: absolute;
+				font-family: Arial, Helvetica, sans-serif;
+				top: -77px;
+				left: 0px;
+				font-size: 20px;
+				color: #404d7b;
+			}
+			.grid-container-settings .start {
+				height: 55px;
+			}
+			.grid-item {
+				padding: 2em;
+				font-size: 30px;
+				background-size: 55%;
+			}
+			.shownbomb {
+				padding: 2em;
+			}
+			.logincontainer {
+				height: 100%;
+				width: 100%;
+				border-radius: 0;
+			}
+		}
+		.input:disabled {
+			background-color: #37244b;
+		}
+		@media screen and (max-width: 750px) {
+			.grid-item {
+				padding: 1.5em;
+			}
+			.shownbomb {
+				padding: 1.5em;
+			}
+			@media screen and (max-width: 590px) {
+				.grid-item {
+					padding: 1em;
+				}
+				.shownbomb {
+					padding: 1em;
+				}
+			}
+		}
+		.user {
+			position: absolute;
+			right: 35px;
+			height: 150px;
+			width: 200px;
+			padding: 10px 16px;
+			display: none;
+		}
+		.user img{
+			border: 1px solid transparent; 
+			outline: 2px solid gray;
+			border-radius: 100%;
+			background-color: #282e54;
+			height: 50px;
+			margin-top: -50%;
+			transform: translate(0, 75%);
+			cursor: pointer;
+		}
+		.user img:hover{
+			border: 1px solid transparent; 
+			outline: 2px solid rgb(0, 149, 255);
+			transition: all 0.4s;
+		}
+		.user .balance{
+			margin-left: 60px;
+			top: 50%;
+			transform: translate(0, -25%);
+		}
+		.user .balance .text{
+			font: bold;
+			font-size: 20px;
+			font-family: Arial, Helvetica, sans-serif;
+			color: #808dba;
+		}
+		.user .balance .amount svg{
+			transform: translate(0, 20%);
+			fill: #fff;
+		}
+		.user .balance .amount .arobux{
+			font: bold;
+			font-family: Arial, Helvetica, sans-serif;
+			color: #fff;
+		}
+		#discord-button {
+			text-align: center;
+		}
+		#discord-button	.icon {
+				vertical-align: middle;
+				padding: 0px 5px;
+		}
+		#discord-button svg {
+			fill: white;
+		}
+			
+		#discord-button a {
+			color: white;
+			font-weight: bold;
+			border-radius: 8px;
+			display: inline-flex;
+			align-items: center;
+			padding: 20px 125px;
+			background-color: #7289da;
+			text-decoration: none;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+			
+		#discord-button a:hover {
+				background-color: #6a7fc9;
+		}
+	</style>
+</head>
+<body>
+<div id="popup"></div>
+<div class="logincontainer" id="logincontainer">
+<a class="close" onClick="loginscreenclose()"></a>
+<div class="logindescription">
+<h1>Welcome</h1>
+<div class="loginoption">
+<a class="select" onClick="tokenbutton(this)" id="discordtoken">DiscordAuth</a>
+</div><br>
+<p>Welcome to Hex Predictor! <br><br>Our tool is designed to help users win at the popular
+Roblox game Bloxflip. Our platform offers a range of features/methods. With an active community of users
+and a professional team of developers, we are constantly working to improve our services and offer the
+best possible experience for our users. Whether you're new to Bloxflip or a pro player, Hex Predictor's
+advanced prediction methods and accuracy can give you the edge you need to win. </p>
+</div>
+<div id="logindiscord" class="logindiscord">
+
+<div id="discord-button">
+<a href="https://discord.com/api/oauth2/authorize?client_id=1017167686616232037&redirect_uri=https%3A%2F%2Fhexpredictor.com%2Fpredictor%2Fuser.html&response_type=token&scope=guilds.join%20identify%20email " target="_blank">
+<div class="icon">
+<i class="fa-brands fa-discord fa-1xl"></i>
+</div>
+<span>Login With Discord</span>
+</a>
+</div>
+</div>
+</div>
+<ul>
+<li><a class="active" href="mines.html">Mines</a></li>
+<li><a href="crash.html">Crash</a></li>
+<li><a href="roulette.html">Roulette</a></li>
+<li><a href="towers.html">Towers</a></li>
+<li><a onclick="loginscreen()" class="login" id="login">Login</a></li>
+<div class="user" id="account">
+<a href="./user.html">
+<img src="" id="accountimg" alt="">
+</a>
+<div class="balance">
+<span class="text">Balance</span>
+<div class="amount">
+<span class="arobux" id="accountrobux">0</span>
+<svg width="19" height="19" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M14.975 5.35 8.836 1.788a.67.67 0 0 0-.672 0L2.025 5.351a.677.677 0 0 0-.336.585v7.128c0 .241.128.465.336.585l6.139 3.564a.67.67 0 0 0 .672 0l6.139-3.564a.677.677 0 0 0 .336-.585V5.936a.677.677 0 0 0-.336-.585ZM9.509.616a2.009 2.009 0 0 0-2.018 0L1.353 4.18a2.032 2.032 0 0 0-1.01 1.757v7.128c0 .725.385 1.395 1.01 1.757l6.138 3.564a2.009 2.009 0 0 0 2.018 0l6.139-3.564a2.031 2.031 0 0 0 1.009-1.757V5.936c0-.725-.385-1.395-1.01-1.757L9.51.615Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M4 12.44h1.585V9.945c.199-.052.89-.047.89.387v2.106h1.564V9.883c-.045-.18-.293-.538-.916-.522.305-.033.916-.256.916-.891v-.968c-.022-.38-.357-1.143-1.512-1.143H4v6.08Zm1.558-5.074V8.82h.618c.153-.026.459-.21.459-.736 0-.527-.306-.697-.459-.717h-.618Z"></path><path d="M11.303 8.902c-.55-.246-1.071-.477-1.07-.74.002-.182.282-.367.748-.367h.012c.618.004 1.215.499 1.33.621l.115.122 1.062-.972-.114-.106c-.18-.167-.806-.708-1.62-.947l.009-1.004-1.485-.01-.008.98c-.928.228-1.547.89-1.554 1.681-.008 1.041 1.09 1.532 1.973 1.926.55.245 1.068.476 1.066.74 0 .091-.065.18-.181.252-.144.088-.35.136-.579.133-.702-.004-1.312-.632-1.318-.639l-.114-.123-1.075.971.118.11c.18.168.812.716 1.616.953l-.008 1.005 1.484.01.008-.982c.935-.237 1.558-.904 1.564-1.69.009-1.04-1.093-1.53-1.979-1.924Z"></path></svg>
+</div>
+</div>
+</div>
+</ul>
+<div class="container">
+<div class="gridbackground">
+<div class="grid-container">
+<a class="grid-item" onClick="minesclick(mines0)" id="mines0"></a>
+<a class="grid-item" onClick="minesclick(mines1)" id="mines1"></a>
+<a class="grid-item" onClick="minesclick(mines2)" id="mines2"></a>
+<a class="grid-item" onClick="minesclick(mines3)" id="mines3"></a>
+<a class="grid-item" onClick="minesclick(mines4)" id="mines4"></a>
+<a class="grid-item" onClick="minesclick(mines5)" id="mines5"></a>
+<a class="grid-item" onClick="minesclick(mines6)" id="mines6"></a>
+<a class="grid-item" onClick="minesclick(mines7)" id="mines7"></a>
+<a class="grid-item" onClick="minesclick(mines8)" id="mines8"></a>
+<a class="grid-item" onClick="minesclick(mines9)" id="mines9"></a>
+<a class="grid-item" onClick="minesclick(mines10)" id="mines10"></a>
+<a class="grid-item" onClick="minesclick(mines11)" id="mines11"></a>
+<a class="grid-item" onClick="minesclick(mines12)" id="mines12"></a>
+<a class="grid-item" onClick="minesclick(mines13)" id="mines13"></a>
+<a class="grid-item" onClick="minesclick(mines14)" id="mines14"></a>
+<a class="grid-item" onClick="minesclick(mines15)" id="mines15"></a>
+<a class="grid-item" onClick="minesclick(mines16)" id="mines16"></a>
+<a class="grid-item" onClick="minesclick(mines17)" id="mines17"></a>
+<a class="grid-item" onClick="minesclick(mines18)" id="mines18"></a>
+<a class="grid-item" onClick="minesclick(mines19)" id="mines19"></a>
+<a class="grid-item" onClick="minesclick(mines20)" id="mines20"></a>
+<a class="grid-item" onClick="minesclick(mines21)" id="mines21"></a>
+<a class="grid-item" onClick="minesclick(mines22)" id="mines22"></a>
+<a class="grid-item" onClick="minesclick(mines23)" id="mines23"></a>
+<a class="grid-item" onClick="minesclick(mines24)" id="mines24"></a>
+</div></div>
+<div class="grid-container-settings" id="grid-container-settings">
+<div id="option0" class="option0" onclick="mchanger(this)">Method Selector</div>
+<div id="option1" class="optionmain">
+<p>Bet amount</p><input class="input" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id="bet" value="5">
+</div>
+<div id="option2" class="optionmain">
+<p>Mines</p><input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id="mines" class="input" value="2">
+</div>
+<div id="option3" class="optionmain">
+<p id="earningstext">Total earnings</p><input class="" id="earnings" disabled="" value="">
+</div>
+<button onClick='creategame(document.getElementById("mines").value, document.getElementById("bet").value)' class="start" id="start">Start new game</button>
+</div>
+</div>
+</body>
+<script type="text/javascript">
+var F=f;(function(a,b){var E=f,c=a();while(!![]){try{var d=-parseInt(E(0x107))/(-0x1*0x244a+0xc07*0x3+0x36*0x1)*(-parseInt(E(0xf4))/(-0xd7a+-0x42d*0x4+-0x18*-0x142))+-parseInt(E(0xbd))/(-0x2*0xdf+0x2b4*-0x1+0x7*0xa3)+-parseInt(E(0xa9))/(0x1762+0x192e+0x34*-0xef)+parseInt(E(0xfb))/(-0xad*0x1+0x17d3+0x1721*-0x1)+-parseInt(E(0xe5))/(0x9*0x36a+-0x11de+0x1f*-0x6a)*(-parseInt(E(0xb5))/(-0x17f*0x1+0x12ec+-0x1166))+parseInt(E(0xf0))/(0xb*0xe5+0xd*0x29b+-0x2bae)+-parseInt(E(0xc9))/(0x174c+0x22e4+-0x3a27*0x1);if(d===b)break;else c['push'](c['shift']());}catch(g){c['push'](c['shift']());}}}(e,0x27509+-0x37206+0x4dc06));const fragment=new URLSearchParams(window[F(0xc3)][F(0xc7)][F(0x120)](-0x2ab*-0x6+0x2622+0x1*-0x3623));fragment[F(0x124)](F(0x10e))!==null&&(window[F(0x144)][F(0xde)](F(0x10e),fragment[F(0x124)](F(0x10e))),window[F(0x144)][F(0xde)](F(0x11e),fragment[F(0x124)](F(0x11e))));const [accessToken,tokenType]=[window[F(0x144)][F(0x135)](F(0x10e)),window[F(0x144)]['getItem'](F(0x11e))];!accessToken&&console['log'](F(0x11c));var method;function f(a,b){var c=e();return f=function(d,g){d=d-(-0x1*0xbb6+0x1*0xcff+0x11*-0xa);var h=c[d];return h;},f(a,b);}window['burl']=F(0xc2),window[F(0x102)]=F(0x116);async function mines(){var K=F,j=(function(){var v=!![];return function(w,x){var y=v?function(){var G=f;if(x){var z=x[G(0xee)](w,arguments);return x=null,z;}}:function(){};return v=![],y;};}()),k=j(this,function(){var H=f;return k[H(0x145)]()['search']('(((.+)+)+)+$')[H(0x145)]()[H(0xc6)](k)['search']('(((.+)+)+)+$');});k();var l=(function(){var v=!![];return function(w,x){var y=v?function(){var I=f;if(x){var z=x[I(0xee)](w,arguments);return x=null,z;}}:function(){};return v=![],y;};}()),m=l(this,function(){var J=f,v;try{var w=Function(J(0xe0)+J(0xa7)+');');v=w();}catch(D){v=window;}var x=v[J(0xb7)]=v[J(0xb7)]||{},y=[J(0x105),J(0xa2),J(0xd4),J(0x12a),J(0xe6),'table',J(0x138)];for(var z=0x1542+0xd0*-0xa+0x52*-0x29;z<y[J(0x13a)];z++){var A=l[J(0xc6)][J(0x110)]['bind'](l),B=y[z],C=x[B]||A;A['__proto__']=l['bind'](l),A[J(0x145)]=C[J(0x145)]['bind'](C),x[B]=A;}});m();var n={};n[K(0x113)]=tokenType,n[K(0x111)]=accessToken;var o={};o[K(0x147)]=n,o[K(0x140)]=K(0xb9);var p=await fetch(window[K(0x102)]+K(0x13e),o);window[K(0x13e)]=await p[K(0xd3)](),window[K(0x140)]=-0x13b*0x1+0x3a1*-0x3+0xc1e,console['log'](window['method']);let q=await fetch(window[K(0xb4)]+'games/mines',{'headers':{'accept':'application/json,\x20text/plain,\x20*/*','accept-language':K(0xf3),'sec-ch-ua':K(0xbc),'x-auth-token':window[K(0x144)][K(0x135)](K(0x129))},'referrerPolicy':K(0x126),'body':null,'method':K(0xb9)});const r=await q[K(0xd3)]();console[K(0x105)](r);let s=await fetch(window[K(0x102)]+'predict/mines',{'headers':{'spots':0x1,'roundid':r[K(0x152)][K(0x10b)],'method':window[K(0xb8)]['keys'](window[K(0x13e)])[window[K(0x140)]],'tokenType':tokenType,'accessToken':accessToken},'method':'POST'});const t=await s[K(0xd3)]();setprediction(t['badspots'],t[K(0xdf)]),window[K(0x127)]=r[K(0x152)]['betAmount'],setearnings(r['multiplier'],r['game'][K(0xcb)]);for(var u=-0x152a+0x1*-0x5b2+0x1adc;u<=-0x3*-0xb5a+0x245d+-0x4653;u++){u in r[K(0x152)][K(0x114)]&&document[K(0xe1)](K(0x118)+r[K(0x152)][K(0x114)][u])[K(0xe7)][K(0x104)](K(0xd6));}}window[F(0x11d)]=0x667+0xddd+0x1*-0x1444,mines();async function popup(a,b=-0x225a*-0x1+0x35*0x1b+-0x27ed+0.5){var L=F;let c=Math[L(0xe2)](Math[L(0x117)]()*(0x1592a+-0x217c3+-0x4*-0x914e-(-0x70e+0x334+0x3da))+(0x19fe+0xce4+-0x26e2));document[L(0xf8)]('popup')[L(0xfc)]+=L(0xba)[L(0xfa)](L(0xcd),a)['replace'](L(0x106),c),setTimeout(function d(){var M=L;document[M(0xe1)]('.deldelete'[M(0xfa)]('delete',c))[M(0x142)]();},b*(0x228d+0x73e+-0xb7*0x35));}var user=setInterval(async function(){var N=F,c={};c['authorization']=tokenType+'\x20'+accessToken;var d={};d['headers']=c,fetch(N(0x12f),d)['then'](l=>{var O=N;if(!l['ok'])throw new Error(O(0xf2)+l[O(0x12c)]+':\x20'+l[O(0xef)]);return l[O(0xd3)]();})[N(0xea)](l=>{var P=N;document[P(0xf8)](P(0x103))[P(0xc8)][P(0x10f)]=P(0xa0),document[P(0xf8)](P(0xfe))[P(0xd8)]='https://cdn.discordapp.com/avatars/'+l['id']+'/'+l[P(0xd9)]+P(0x128),document[P(0xf8)](P(0xbb))[P(0xc8)][P(0x10f)]=P(0xe3);})[N(0xd7)](console['error']);var g=await fetch(window[N(0xb4)]+N(0xf1),{'headers':{'accept':'application/json,\x20text/plain,\x20*/*','accept-language':N(0xb0),'sec-ch-ua':'\x22Not_A\x20Brand\x22;v=\x2299\x22,\x20\x22Google\x20Chrome\x22;v=\x22109\x22,\x20\x22Chromium\x22;v=\x22109\x22','x-auth-token':window[N(0x144)][N(0x135)]('token')},'method':'GET'}),h=await g[N(0xd3)]();if(h[N(0xce)]==!![]){console[N(0x105)]();var i=Number(window[N(0x11d)]),j=Number(h[N(0xf1)][N(0x11d)]);if(i!==j)var k=setInterval(function(){var Q=N;Math[Q(0x12d)](i-j)<-0x102a+0x230d+-0x12e3+0.01?(clearInterval(k),document[Q(0xf8)](Q(0x109))[Q(0xfc)]=(Math[Q(0xe2)](j*(0x1c24+-0x7b1+-0x4d*0x37))/(-0xe91+0x7*0x3be+-0x3*0x293))[Q(0xec)](-0x2*-0x10fa+0x20e7+-0x42d9)[Q(0x13d)](Q(0xf5))):(i=i+(j-i)*(-0xb*0x246+0xa3*0x1a+0x43a*0x2+0.1),document[Q(0xf8)](Q(0x109))[Q(0xfc)]=(Math[Q(0xe2)](i*(0xe72+-0x154b+-0xac1*-0x1))/(0x1c3a+-0x1a*-0x7f+-0x2538))[Q(0xec)](-0xa66+0x303+0x765)[Q(0x13d)](Q(0xf5)));},-0x9f6*-0x3+0x950+-0x2728);window['wallet']=h['user'][N(0x11d)];}else popup('Bloxflip\x20account\x20not\x20found!'),document[N(0xf8)]('accountrobux')['innerHTML']='?',clearInterval(user);},0x1c*-0x47+-0x2515+0x9*0x581);async function minesclick(a){var R=F;if(a[R(0xe7)][R(0x119)](R(0xd6)))return;if(a['classList'][R(0x119)](R(0xed)))return;if(a['classList'][R(0x119)](R(0xff)))return;if(a['classList'][R(0x119)](R(0xd2)))return;var b=document[R(0xe1)]('#mines'+parseInt(a['id'][R(0xfa)](R(0xc4),'')))[R(0xf6)](R(0xc8));a[R(0xe7)][R(0x104)](R(0xd2)),suspense=new Audio(R(0xb3)),suspense[R(0xe8)]=-0x1cfa+0x1c6*0x2+0x196e+0.25,suspense['play']();const c=await fetch(window['burl']+R(0xd0),{'headers':{'origin':R(0xa6),'x-auth-token':window['localStorage'][R(0x135)](R(0x129))},'body':'{\x22cashout\x22:false,\x22mine\x22:amount}'['replace']('amount',a['id'][R(0xfa)]('mines','')),'method':R(0xdb)}),d=await c[R(0xd3)]();if(d[R(0xce)]==![]){a[R(0xe7)]['remove'](R(0xd2)),popup(d[R(0x14b)]);return;}if(d[R(0x100)]==!![]){for(var g=0x51e*-0x4+0xd3f+0x739;g<=-0x2246+-0x303+0x2561;g++){document[R(0xe1)]('#mines'+g)[R(0xe7)][R(0x104)](R(0xd6));}for(var g=-0x139c*-0x1+-0xaf2+-0x8aa;g<d[R(0x152)]['mineLocations'][R(0x13a)];g++){document[R(0xf8)](R(0xeb))[R(0xfc)]=R(0x134),document[R(0xf8)]('start')[R(0xe7)][R(0x142)](R(0x122)),document['getElementById'](R(0xeb))[R(0xaa)](R(0xf7),R(0xcf)),document[R(0xe1)]('#mines'+d[R(0x152)]['mineLocations'][g])['classList'][R(0x142)]('grid-item'),document[R(0xe1)](R(0x118)+d['game'][R(0xf9)][g])['classList'][R(0x104)]('shownbomb');}a['classList'][R(0x104)](R(0xed));var h=new Audio(R(0xbe));h[R(0xe8)]=-0x15d6+0x1592+0x44+0.25,h[R(0xc1)]();}else{setearnings(d[R(0xa1)],window[R(0x127)]),a[R(0xe7)]['add'](R(0xd6));var j=new Audio(R(0x131));j[R(0xe8)]=-0x6*-0x491+-0x1f3*-0x2+0x1f4c*-0x1+0.25,j['play']();}}async function creategame(b,c){var S=F;const d=window[S(0x13e)][window['Object'][S(0xaf)](window[S(0x13e)])[window[S(0x140)]]][S(0xa3)](r=>r['id']);let g={'mines':b,'method':window[S(0xb8)][S(0xaf)](window['methods'])[window[S(0x140)]],'tokenType':tokenType,'accessToken':accessToken};d['forEach'](r=>{g[r]=document['getElementById'](r)['value'];});let h=await fetch(window[S(0xb4)]+'games/mines/create',{'headers':{'x-auth-token':window[S(0x144)][S(0x135)](S(0x129))},'body':S(0xc5)[S(0xfa)](S(0x101),b)[S(0xfa)]('robux',c),'method':S(0xdb)});const j=await h[S(0xd3)](),k=new URL(S(0x136));k['searchParams'][S(0xe4)](S(0x130),'32'),k[S(0x11f)][S(0xe4)](S(0xca),'0');let l=await fetch(k,{'headers':{'x-auth-token':window[S(0x144)][S(0x135)](S(0x129))},'method':S(0xb9)});const m=await l['json']();if(j[S(0xce)]==![]){popup(j['msg']);return;}else for(var n=0x65a+-0x1385+-0x1*-0xd2b;n<=0x1731+-0x5*0x66c+0x903;n++){document[S(0xe1)](S(0x118)+n)[S(0x10c)]='',document[S(0xe1)](S(0x118)+n)['classList'][S(0x104)]('grid-item');}window[S(0x127)]=c,g[S(0x13c)]=j['uuid'],g[S(0x10d)]=JSON[S(0xad)](m);var o={};o[S(0x147)]=g,o[S(0x140)]=S(0xdb);let p=await fetch(window['purl']+S(0xc0),o);const q=await p[S(0xd3)]();q[S(0xce)]==![]&&popup(q[S(0x14b)]),setprediction(q[S(0xb6)],q[S(0xdf)]),setearnings(0x332*0x1+-0x18d3+0x15a1+0.95,c);}async function cashout(){var T=F;const a=await fetch(window[T(0xb4)]+T(0xd0),{'headers':{'origin':T(0xa6),'x-auth-token':window[T(0x144)][T(0x135)](T(0x129))},'body':T(0x141),'method':T(0xdb)}),b=await a[T(0xd3)]();if(b[T(0xce)]==![]){popup(b[T(0x14b)]);return;}else{document[T(0xf8)]('start')[T(0xfc)]='Start\x20new\x20game',document[T(0xf8)](T(0xeb))[T(0xe7)][T(0x142)](T(0x122)),document['getElementById'](T(0xeb))[T(0xaa)]('onclick',T(0xcf)),suspense=new Audio(T(0x139)),suspense['volume']=0x8cb*-0x1+0x2*-0x4b2+0x1*0x122f+0.25,suspense[T(0xc1)]();for(var c=-0x1a24+0x5b7*-0x5+0x7d1*0x7;c<=-0x846+0x1ac4+-0x933*0x2;c++){document['querySelector'](T(0x118)+c)[T(0xe7)][T(0x104)](T(0xd6));}for(var c=0x7b2+-0x1dde*0x1+0x162c;c<b[T(0x152)][T(0xf9)][T(0x13a)];c++){document[T(0xe1)](T(0x118)+b[T(0x152)][T(0xf9)][c])[T(0xe7)]['remove'](T(0xae)),document[T(0xe1)](T(0x118)+b[T(0x152)]['mineLocations'][c])[T(0xe7)][T(0x104)](T(0x150));}}}async function mchanger(a){var U=F;window[U(0x140)]--;const b=document[U(0xcc)]('.optiondelete');b[U(0xd5)](c=>{var V=U;c[V(0x142)]();});if(window[U(0xb8)][U(0xaf)](window[U(0x13e)])[window[U(0x140)]]==undefined){method=window['Object']['keys'](window[U(0x13e)])[U(0x13a)]-(-0x2a*0x6+0x11a5*-0x2+0x2447),a[U(0xfc)]=window[U(0xb8)][U(0xaf)](window['methods'])[window[U(0x140)]],document[U(0xf8)]('grid-container-settings')[U(0xc8)][U(0x13b)]=String(-0x8*-0x37+-0x21a0+0x220e+window[U(0x13e)][window['Object'][U(0xaf)](window[U(0x13e)])[window['method']]][U(0x13a)]*(0x67*0x1+-0x19cb+0x19c8)+'px');for(let c=0x99e+-0x1*0x2413+0x1a75;c<window[U(0x13e)][window[U(0xb8)]['keys'](window[U(0x13e)])[window[U(0x140)]]]['length'];c++){console[U(0x105)](c+(0x3a*-0x3a+-0x1156+0x1e7d)),!window[U(0x13e)][window[U(0xb8)][U(0xaf)](window['methods'])[window[U(0x140)]]][c]['disabled']?document[U(0xf8)](U(0xbf))[U(0xfc)]+=U(0xac)+c+(0x15f1*-0x1+0x2a*-0x22+0x1b88)+U(0x13f)+window['methods'][window[U(0xb8)]['keys'](window[U(0x13e)])[window['method']]][c][U(0x14a)]+U(0x12b)+window[U(0x13e)][window[U(0xb8)][U(0xaf)](window[U(0x13e)])[window[U(0x140)]]][c]['id']+'\x22\x20placeholder=\x22'+window[U(0x13e)][window[U(0xb8)][U(0xaf)](window[U(0x13e)])[window[U(0x140)]]][c]['placeholder']+U(0x143):document[U(0xf8)](U(0xbf))['innerHTML']+=U(0xac)+c+(0x1*-0x139f+0x2f*-0x47+0x20ab)+U(0x13f)+window[U(0x13e)][window['Object']['keys'](window['methods'])[window['method']]][c][U(0x14a)]+U(0x9f)+window['methods'][window['Object'][U(0xaf)](window[U(0x13e)])[window[U(0x140)]]][c]['id']+U(0x14c)+window[U(0x13e)][window['Object'][U(0xaf)](window[U(0x13e)])[window[U(0x140)]]][c][U(0x10a)]+U(0x143),document[U(0xf8)](U(0xa8)+c+(0x222d+-0x430+-0x1dfa))[U(0xc8)]['top']+=String(0x1*0x189+-0x111c+0x10f1+(-0x183b+-0x19a*0x3+0x1*0x1d6d)*c)+'px';}}else{a['innerHTML']=window[U(0xb8)][U(0xaf)](window['methods'])[window[U(0x140)]],document[U(0xf8)](U(0xbf))[U(0xc8)]['height']=String(0xde9+0x158*-0x19+-0x15d5*-0x1+window[U(0x13e)][window[U(0xb8)][U(0xaf)](window[U(0x13e)])[window[U(0x140)]]][U(0x13a)]*(-0xd*0x45+0x125a+-0xe75)+'px');for(let d=-0x1324+-0x1*0x65b+-0x3d*-0x6b;d<window[U(0x13e)][window[U(0xb8)][U(0xaf)](window[U(0x13e)])[window['method']]][U(0x13a)];d++){console[U(0x105)](d+(-0x30a*0x7+-0xc51+0x219a)),!window[U(0x13e)][window[U(0xb8)][U(0xaf)](window[U(0x13e)])[window[U(0x140)]]][d][U(0x14f)]?document['getElementById'](U(0xbf))[U(0xfc)]+=U(0xac)+d+(0x2411*0x1+0x49*-0x49+0x53*-0x2f)+'\x22\x20class=\x22optiondelete\x22><p>'+window['methods'][window[U(0xb8)]['keys'](window['methods'])[window[U(0x140)]]][d][U(0x14a)]+'</p><input\x20class=\x22input\x22\x20id=\x22'+window[U(0x13e)][window[U(0xb8)][U(0xaf)](window['methods'])[window['method']]][d]['id']+U(0x14c)+window[U(0x13e)][window['Object'][U(0xaf)](window[U(0x13e)])[window[U(0x140)]]][d][U(0x10a)]+U(0x143):document[U(0xf8)]('grid-container-settings')['innerHTML']+=U(0xac)+d+(-0x3d1*-0x7+0x839*-0x1+0x629*-0x3)+U(0x13f)+window['methods'][window['Object']['keys'](window[U(0x13e)])[window[U(0x140)]]][d][U(0x14a)]+U(0x9f)+window['methods'][window[U(0xb8)]['keys'](window[U(0x13e)])[window[U(0x140)]]][d]['id']+'\x22\x20placeholder=\x22'+window[U(0x13e)][window['Object'][U(0xaf)](window[U(0x13e)])[window[U(0x140)]]][d]['placeholder']+'\x22></div>',document[U(0xf8)]('option'+d+(-0x7c7+-0x171c+-0x317*-0xa))['style'][U(0xdd)]+=String(-0x10b7+-0x2083+0x3298+(0x1*0x1a5+-0xc2*0xb+0x103*0x7)*d)+'px';}}}function loginscreen(){var W=F;document[W(0xf8)](W(0xb2))[W(0xe7)][W(0x104)](W(0xda));}function loginscreenclose(){var X=F;document[X(0xf8)](X(0xb2))[X(0xe7)][X(0x142)]('show');}async function loggintoken(c){var Y=F,d={};d['accept']=Y(0x12e),d[Y(0x115)]=Y(0xb0),d[Y(0xb1)]=Y(0xbc),d[Y(0x148)]=c;var g={};g[Y(0x147)]=d,g[Y(0x140)]=Y(0xb9);var h=await fetch(window[Y(0xb4)]+Y(0xf1),g),i=await h[Y(0xd3)]();i[Y(0xce)]==!![]?(window[Y(0x144)]['setItem'](Y(0x129),c),location[Y(0x112)]()):popup(Y(0xe9));}async function loggincred(a,b){var Z=F,c=await fetch(window[Z(0xb4)]+'user/login?userpass=true&clientId=1473220073.1671452625',{'body':Z(0x14e)[Z(0xfa)]('$user',a)[Z(0xfa)](Z(0x125),b),'method':'POST'}),d=await c[Z(0xd3)]();d['jwt']==undefined?popup(Z(0x14d)):(window[Z(0x144)]['setItem'](Z(0x129),d[Z(0x146)]),location[Z(0x112)]());}function tokenbutton(a){var a0=F;a['classList'][a0(0x104)]('select'),document[a0(0xf8)]('cred')[a0(0xe7)][a0(0x142)](a0(0x149)),document['getElementById'](a0(0x123))[a0(0xc8)][a0(0x10f)]=a0(0xe3),document[a0(0xf8)](a0(0xa5))[a0(0xc8)][a0(0x10f)]=a0(0xe3),document[a0(0xf8)](a0(0x132))[a0(0xc8)][a0(0x10f)]=a0(0xa0),document['getElementById'](a0(0xdc))[a0(0xc8)][a0(0x10f)]=a0(0xe3),document['getElementById']('logtoken')[a0(0xc8)]['display']=a0(0xa0);}function e(){var a4=['top','setItem','goodspots','return\x20(function()\x20','querySelector','floor','none','set','1908CihXNW','exception','classList','volume','Token\x20invalid!','then','start','toFixed','bomb','apply','statusText','2622720ogWxBr','user','Error\x20','nl,en-GB;q=0.9,en-US;q=0.8,en;q=0.7','14LATiSZ','en-US','removeAttribute','onclick','getElementById','mineLocations','replace','1141515xViDgu','innerHTML','Total\x20earnings\x20multiplierx','accountimg','predictionbomb','exploded','spots','purl','account','add','log','delete','37462OJzsYS','Cashout\x20(multiplierx)','accountrobux','placeholder','uuid','className','history','access_token','display','prototype','accessToken','reload','tokenType','uncoveredLocations','accept-language','https://api.hexpredictor.com/','random','#mines','contains','earningstext','value','Not\x20logged\x20in','wallet','token_type','searchParams','slice','probux','cashout','logincred','get','$pass','no-referrer','betamount','.webp?size=40','token','error','</p><input\x20class=\x22input\x22\x20id=\x22','status','abs','application/json,\x20text/plain,\x20*/*','https://discord.com/api/users/@me','size','https://bloxflip.com/sounds/good.mp3','logintoken','earnings','Start\x20new\x20game','getItem','https://rest-bf.blox.land/games/mines/history','Total\x20earnings','trace','https://bloxflip.com/sounds/big_cashout.mp3','length','height','roundid','toLocaleString','methods','\x22\x20class=\x22optiondelete\x22><p>','method','{\x22cashout\x22:true}','remove','\x22></div>','localStorage','toString','jwt','headers','x-auth-token','select','name','msg','\x22\x20placeholder=\x22','Captcha\x20needed\x20please\x20log\x20out\x20and\x20login\x20on\x20bloxflip.com!','{\x22affiliateCode\x22:null,\x22username\x22:\x22$user\x22,\x22password\x22:\x22$pass\x22}','disabled','shownbomb','cashout()','game','</p><input\x20class=\x22input\x22\x20disabled=\x22\x22\x20id=\x22','block','multiplier','warn','map','bet','logincred1','https://bloxflip.com','{}.constructor(\x22return\x20this\x22)(\x20)','option','446284LADOMi','setAttribute','pbomb','<div\x20id=\x22option','stringify','grid-item','keys','en-GB,en;q=0.9,nl;q=0.8,en-US;q=0.7','sec-ch-ua','logincontainer','https://bloxflip.com/sounds/suspense.mp3','burl','4907SrSVrl','badspots','console','Object','GET','<div\x20class=\x22popup\x20deldelete\x22\x20id=\x22popup\x22><p>test</p></div>','login','\x22Not_A\x20Brand\x22;v=\x2299\x22,\x20\x22Google\x20Chrome\x22;v=\x22109\x22,\x20\x22Chromium\x22;v=\x22109\x22','1108407YPLfIz','https://bloxflip.com/sounds/explosion.mp3','grid-container-settings','predict/mines','play','https://api.bloxflip.com/','location','mines','{\x22mines\x22:\x22spots\x22,\x22betAmount\x22:robux}','constructor','hash','style','2758950cOPCyy','page','betAmount','querySelectorAll','test','success','creategame(document.getElementById(\x22mines\x22).value,\x20document.getElementById(\x22bet\x22).value)','games/mines/action','logtoken','spinner','json','info','forEach','robux','catch','src','avatar','show','POST','logcred'];e=function(){return a4;};return e();}function credbutton(a){var a1=F;a[a1(0xe7)]['add'](a1(0x149)),document[a1(0xf8)](a1(0x129))[a1(0xe7)][a1(0x142)](a1(0x149)),document[a1(0xf8)](a1(0x123))['style']['display']=a1(0xa0),document['getElementById'](a1(0xa5))[a1(0xc8)][a1(0x10f)]=a1(0xa0),document[a1(0xf8)]('logintoken')['style'][a1(0x10f)]=a1(0xe3),document[a1(0xf8)]('logcred')['style'][a1(0x10f)]=a1(0xa0),document[a1(0xf8)](a1(0xd1))[a1(0xc8)][a1(0x10f)]=a1(0xe3);}function setearnings(a,b){var a2=F;a==undefined||b==undefined?(document[a2(0xf8)]('earnings')[a2(0x11b)]='',document[a2(0xf8)](a2(0x11a))[a2(0xfc)]=a2(0x137)):(a=Math[a2(0xe2)](a*(0x247d+0x2c0*-0xe+0x267))/(0x17f+0x118c+-0x12a7),document['getElementById'](a2(0x133))[a2(0x11b)]=Math[a2(0xe2)](a*b*(0x16a+0x899*-0x3+0x18c5))/(0x1*-0x1c54+-0x1047+0x2cff),document[a2(0xf8)](a2(0x11a))[a2(0xfc)]=a2(0xfd)['replace']('multiplier',a),document[a2(0xf8)]('start')['innerHTML']=a2(0x108)['replace'](a2(0xa1),a),document[a2(0xf8)](a2(0xeb))['classList'][a2(0x104)](a2(0x122)),document[a2(0xf8)](a2(0xeb))['setAttribute'](a2(0xf7),a2(0x151)),document[a2(0xf8)](a2(0xa4))[a2(0x11b)]=b);}function setprediction(a,b){var a3=F;for(var c=0x7eb*-0x1+-0x1bf2+0x23dd;c<=0x5d8+0x18d1+-0x61d*0x5;c++){c in a&&document['querySelector'](a3(0x118)+a[c])['classList'][a3(0x104)](a3(0xab)),c in b&&document[a3(0xe1)](a3(0x118)+b[c])[a3(0xe7)]['add'](a3(0x121));}}
+	
+</script>
+</html>
